@@ -32,3 +32,11 @@ weather_bar <- ggplot(vData, aes(x=weather)) +
   geom_bar()
 
 (temp_atemp + date_temp) / (box_humid + weather_bar)
+
+ggplot(vData, aes(x=registered, y=casual)) +
+  geom_point()
+
+vData <- mutate(vData, rental = casual+registered)
+
+ggplot(vData, aes(x=rental, y=count))+
+  geom_point()
