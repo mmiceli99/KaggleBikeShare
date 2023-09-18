@@ -61,6 +61,7 @@ bike_recipe <- recipe(count~., data=bikeTrain) %>%
   step_mutate(workingday=factor(workingday,levels=c(0,1), labels=c("No", "Yes"))) %>%
   step_time(datetime, features="hour") %>%
   step_poly(temp, degree=2) %>%
+  #step_poly(atemp, degree=2) %>%
   step_rm(datetime)
 prepped_recipe <- prep(bike_recipe)
 bake(prepped_recipe, new_data = bikeTrain) #Make sure recipe work on train
