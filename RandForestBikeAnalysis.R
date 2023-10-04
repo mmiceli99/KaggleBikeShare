@@ -25,17 +25,20 @@ log_bike_recipe <- recipe(count~., data=logTrainData) %>%
   step_mutate(season=factor(season, levels=1:4, labels=c("Spring", "Summer", "Fall", "Winter"))) %>%
   step_mutate(holiday=factor(holiday, levels=c(0,1), labels=c("No", "Yes"))) %>%
   step_mutate(workingday=factor(workingday,levels=c(0,1), labels=c("No", "Yes"))) %>%
-  step_time(datetime, features="hour") %>%
-  #Try w/o hour factor first
   step_mutate(hour = factor(hour(datetime), levels=c(0:23), labels=c(0:23))) %>%
+  #step_time(datetime, features="hour") %>%
+  step_date(datetime, features = c('year', 'month')) %>%
+  
+  #Try w/o hour factor first
+
   #step_poly(temp, degree=2) %>%
   #step_dummy(all_nominal_predictors()) %>% #make dummy variables
   #step_normalize(all_numeric_predictors())%>% #make mean 0, sd=1
   #step_poly(atemp, degree=2) %>%
   step_rm(datetime)
 prepped_recipe <- prep(log_bike_recipe)
-bake(prepped_recipe, new_data = logTrainData) #Make sure recipe work on train
-bake(prepped_recipe, new_data = bikeTest)
+#bake(prepped_recipe, new_data = logTrainData) #Make sure recipe work on train
+#bake(prepped_recipe, new_data = bikeTest)
 
 
 my_mod <- rand_forest(mtry = tune(),
